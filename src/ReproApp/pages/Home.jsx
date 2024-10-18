@@ -3,16 +3,45 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Carousel from '../components/Carousel';
 import NotificationBanner from '../components/NotificationBanner';
-import Navbar from '../components/Navbar.jsx';
+import Navbar from '../components/Navbar';
 import Logo from '../components/Logo';
 
-const Home = ({ carouselItems }) => {
+const Home = () => {
   const navigate = useNavigate();
 
   const handleAnnouncementClick = () => {
     console.log("Navigating to announcement page");
     navigate('/announcement');
   };
+
+  const handleCarouselItemClick = (link) => {
+    if (link) {
+      navigate(link);
+    }
+  };
+  
+  const carouselItems = [
+    { 
+      title: '집에서 click한번으로 난임 검사!',
+      description: '정자 건강 체크하고 냉동 정자 까지!',
+      color: 'bg-blue-500',
+      link: '/repro_cryo'
+    },
+    // Add more items if needed
+  ];
+
+  const updatedCarouselItems = carouselItems.map(item => ({
+    ...item,
+    content: (
+      <div 
+        className={`h-full ${item.color} text-white p-4 flex flex-col justify-center cursor-pointer`}
+        onClick={() => handleCarouselItemClick(item.link)}
+      >
+        <h2 className="text-2xl font-bold mb-2">{item.title}</h2>
+        <p>{item.description}</p>
+      </div>
+    )
+  }));
 
   return (
     <div className="flex flex-col h-full">
@@ -56,7 +85,7 @@ const Home = ({ carouselItems }) => {
           </motion.div>
         </div>
 
-        <Carousel items={carouselItems} />
+        <Carousel items={updatedCarouselItems} />
         <NotificationBanner onAnnouncementClick={handleAnnouncementClick} />
         <div className="p-4">
           <h2 className="text-lg font-semibold mb-2">가까운 난임 병원 알아보기</h2>
